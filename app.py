@@ -2,7 +2,6 @@ import streamlit as st
 import re
 from tax_engine import calculate_tax
 
-# ------------------ Page Config ------------------
 st.set_page_config(
     page_title="Tax Preparation Assistant",
     page_icon="🧾",
@@ -12,7 +11,6 @@ st.set_page_config(
 st.title("🧾 Tax Preparation Assistant")
 st.caption("Rule-based chatbot for Indian tax calculation")
 
-# ------------------ Helper Function ------------------
 def parse_income(user_input: str) -> int | None:
     raw = user_input.lower().replace(",", "").strip()
 
@@ -23,15 +21,13 @@ def parse_income(user_input: str) -> int | None:
     value = float(match.group())
 
     if "crore" in raw or "cr" in raw:
-        return int(value * 10_000_000)     # 1 crore
+        return int(value * 10_000_000)     
     elif "lpa" in raw:
-        return int(value * 100_000)        # ✅ 1 LPA = 1 lakh
-    elif "lakh" in raw or "lak" in raw:
-        return int(value * 100_000)        # 1 lakh
+        return int(value * 100_000)      
+    elif "lakh" in raw or "lak" in raw:  
+        return int(value * 100_000)        
     else:
-        return int(value)                  # already in rupees            # already in rupees
-
-# ------------------ Session State ------------------
+        return int(value)                  
 if "messages" not in st.session_state:
     st.session_state.messages = []
     st.session_state.stage = "income"
@@ -39,7 +35,6 @@ if "messages" not in st.session_state:
     st.session_state.ded_80c = 0
     st.session_state.ded_80d = 0
 
-# Initial message
 if not st.session_state.messages:
     st.session_state.messages.append({
         "role": "assistant",
@@ -49,12 +44,10 @@ if not st.session_state.messages:
         )
     })
 
-# ------------------ Display Messages ------------------
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.markdown(msg["content"])
 
-# ------------------ User Input ------------------
 user_input = st.chat_input("Enter your response...")
 
 if user_input:
@@ -64,7 +57,6 @@ if user_input:
 
     reply = ""
 
-    # ---------- STAGE 1: INCOME ----------
     if st.session_state.stage == "income":
         income = parse_income(user_input)
 
@@ -80,7 +72,6 @@ if user_input:
                 "(Section 80C)\nReply **yes** or **no**."
             )
 
-    # ---------- STAGE 2: 80C ----------
     elif st.session_state.stage == "deductions":
         if "yes" in user_input.lower():
             st.session_state.ded_80c = 150000
@@ -91,7 +82,6 @@ if user_input:
             "(Section 80D)\nReply **yes** or **no**."
         )
 
-    # ---------- STAGE 3: 80D + SUMMARY ----------
     elif st.session_state.stage == "health":
         if "yes" in user_input.lower():
             st.session_state.ded_80d = 25000
