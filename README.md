@@ -12,4 +12,4 @@ A Python-based bot that assists users in preparing and organizing tax-related in
 ## Installation
 1. Clone the repository
    ```bash
-   git clone https://github.com/Stefishobika/tax_preparation_bot.git
+   git clone https://github.com/Yourname/tax_preparation_bot.git
