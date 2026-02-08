@@ -9,10 +9,6 @@ A Python-based bot that assists users in preparing and organizing tax-related in
 - Generates a structured tax summary
 - Easy-to-use command-line interface
 
-## Tech Stack
-- Python
-- Git & GitHub
-
 ## Installation
 1. Clone the repository
    ```bash
